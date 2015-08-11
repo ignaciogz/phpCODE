@@ -4,15 +4,17 @@
 	*/
 ?>
 <?php
-//Asignación de números enteros, de coma flotante y cadenas de caracteres:
+	//Asignación de números enteros, de coma flotante y cadenas de caracteres:
 	$numero_entero = 12343;
 	$numero_flotante = 12343.123;
 	$cadena_caracter = "12 34 3";
-//Asignación de los tipos especiales boolean y NULL:
+	
+	//Asignación de los tipos especiales boolean y NULL:
 	$verdadero = TRUE;
 	$vacio = NULL;
-//Esta línea da error, el nombre de variable no puede comenzar con un Numero:
-//$4numero = 23;
+	
+	//Esta línea da error, el nombre de variable no puede comenzar con un Numero:
+	//$4numero = 23;
 	$_numero = 45;
 
 
