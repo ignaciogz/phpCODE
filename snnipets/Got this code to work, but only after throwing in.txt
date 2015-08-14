@@ -1,5 +1,0 @@
-Got this code to work, but only after throwing in these functions, which stop PHP from automatically adding the no-cache header.
-
-session_cache_limiter(‘public’); //This stop php’s default no-cache
-
-session_cache_expire(5); // Optional expiry time in minutes
