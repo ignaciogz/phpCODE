@@ -23,9 +23,9 @@
 			   	} 
 		}
 		/* EJEMPLOS DE USO: */
-		auto_copyright(); // 2011
+		auto_copyright(); // 2016
 
-		auto_copyright('2010');  // 2010 - 2011 
+		auto_copyright('2010');  // 2010 - 2016 
 	?>
 
 
