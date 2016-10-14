@@ -14,19 +14,7 @@ class DatabasePDO
     final private function __construct($archivo = 'ubicacion/configuracion.ini')
     {
         //Obtengo los datos de un archivo de configuracion, para NO Hardcodear
-            if (!$cfg = parse_ini_file($archivo, true))
-            {
-                throw new exception ('No se puede abrir el archivo: ' . $archivo . '.');
-            } 
-
-            $this->db_controlador   = $cfg["database"]["driver"];
-            $this->db_servidor      = $cfg["database"]["host"];
-            $this->db_pruerto       = $cfg["database"]["port"];
-            $this->db               = $cfg["database"]["schema"];
-            
-            $this->db_usuario       = $cfg['database']['username'];
-            $this->db_pass          = $cfg['database']['password'];
-
+            $this->obtenerConfiguracion($archivo);
 
         //Creo una instancia de PDO
         try{
@@ -53,8 +41,8 @@ class DatabasePDO
     }
    
     
-    /* Evito que el objeto se pueda clonar, en caso de intentarlo disparo un error de nivel usuario */
-    final public function __clone()
+    // Evito que el objeto se pueda clonar, en caso de intentarlo disparo un error de nivel usuario
+    final private function __clone()
     {
         trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR);
     }
@@ -82,12 +70,12 @@ class DatabasePDO
                 }
 
                 //Si la consulta que devuelve valores, los guardo en un arreglo asociativo.
-                $resultado = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $resultado = $statement->fetchAll(PDO::FETCH_ASSOC);
                 $statement->closeCursor();
             }
             catch(PDOException $e){
                 /*
-                    Si el codigo de error es = HY000 indica que el metodo fetchall() devolvio vacio.
+                    Si el codigo de error es = HY000 indica que el metodo fetchAll() devolvio vacio.
                     Devuelve vacio, cuando se ejecuta consultas INSERT y UPDATE
                 */
                 if($e->getCode()!='HY000')
@@ -98,5 +86,21 @@ class DatabasePDO
             }   
         }
         return $resultado;
+    }
+
+    final private function obtenerConfiguracion()
+    {
+        if (!$cfg = parse_ini_file($archivo, true))
+        {
+            throw new exception ('No se puede abrir el archivo: ' . $archivo . '.');
+        } 
+
+        $this->db_controlador   = $cfg["database"]["driver"];
+        $this->db_servidor      = $cfg["database"]["host"];
+        $this->db_pruerto       = $cfg["database"]["port"];
+        $this->db               = $cfg["database"]["schema"];
+            
+        $this->db_usuario       = $cfg['database']['username'];
+        $this->db_pass          = $cfg['database']['password'];
     }
 }

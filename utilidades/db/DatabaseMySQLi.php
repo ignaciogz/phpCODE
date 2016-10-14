@@ -14,19 +14,7 @@ class DatabaseMySQLi
     final private function __construct($archivo = 'ubicacion/configuracion.ini')
     {
         //Obtengo los datos de un archivo de configuracion, para NO Hardcodear
-            if (!$cfg = parse_ini_file($archivo, true))
-            {
-                throw new exception ('No se puede abrir el archivo: ' . $archivo . '.');
-            } 
-
-            $this->db_controlador   = $cfg["database"]["driver"];
-            $this->db_servidor      = $cfg["database"]["host"];
-            $this->db_pruerto       = $cfg["database"]["port"];
-            $this->db               = $cfg["database"]["schema"];
-            
-            $this->db_usuario       = $cfg['database']['username'];
-            $this->db_pass          = $cfg['database']['password'];
-
+            $this->obtenerConfiguracion($archivo);
 
         //Creo una instancia de PDO
         $this->dbh = new mysqli($this->db_servidor, $this->db_usuario, $this->db_pass, $this->db);
@@ -120,5 +108,21 @@ class DatabaseMySQLi
             return $arrayDeReferencias;
         }
         return $arrayDeParametros;
+    }
+
+    final private function obtenerConfiguracion()
+    {
+        if (!$cfg = parse_ini_file($archivo, true))
+        {
+            throw new exception ('No se puede abrir el archivo: ' . $archivo . '.');
+        } 
+
+        $this->db_controlador   = $cfg["database"]["driver"];
+        $this->db_servidor      = $cfg["database"]["host"];
+        $this->db_pruerto       = $cfg["database"]["port"];
+        $this->db               = $cfg["database"]["schema"];
+            
+        $this->db_usuario       = $cfg['database']['username'];
+        $this->db_pass          = $cfg['database']['password'];
     }
 }
