@@ -1,4 +1,13 @@
 <?php
+/**
+  * DatabasePDO Class
+  * @author Ignacio Gutierrez
+  *
+  * @method consultar "Ejecuta consultas preparandolas"
+  * @param string $consultaSQL "Representa el template de las consultas a realizar" 
+  * @param array $valores "Representa la informacion necesaria para la consulta"
+*/
+
 class DatabasePDO
 {
     private static $instancia; // Contenedor de la instancia del Singleton

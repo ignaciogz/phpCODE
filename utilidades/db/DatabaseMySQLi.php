@@ -1,4 +1,13 @@
 <?php
+/**
+  * DatabaseMySQLi Class
+  * @author Ignacio Gutierrez
+  *
+  * @method consultar "Ejecuta consultas preparandolas"
+  * @param string $consultaSQL "Representa el template de las consultas a realizar" 
+  * @param array $valores "Representa la informacion necesaria para la consulta"
+*/
+
 class DatabaseMySQLi
 {
     private static $instancia; // Contenedor de la instancia del Singleton
