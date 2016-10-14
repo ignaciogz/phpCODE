@@ -1,14 +1,10 @@
 <?php
 /**
-  * DatabasePDO Class
+  * DatabasePDO_PreparedTransaction Class
   * @author Ignacio Gutierrez
-  *
-  * @method consultar "Ejecuta consultas preparandolas"
-  * @param string $consultaSQL "Representa el template de las consultas a realizar" 
-  * @param array $valores "Representa la informacion necesaria para la consulta"
 */
 
-class DatabasePDO
+class DatabasePDO_PreparedTransaction
 {
     private static $instancia; // Contenedor de la instancia del Singleton
     private $db;
@@ -18,6 +14,8 @@ class DatabasePDO
     private $db_usuario;
     private $db_pass;
     private $dbh;
+
+    private $conjuntoDeDatos = array();
 
     /* Un constructor privado evita la creación de un nuevo objeto */
     final private function __construct($archivo = 'ubicacion/configuracion.ini')
@@ -57,12 +55,18 @@ class DatabasePDO
     }
 
 
+    /**
+    * @method consultar "Ejecuta consultas preparandolas"
+    * @param string $consultaSQL "Representa el template de las consultas a realizar" 
+    * @param array $valores "Representa la informacion necesaria para la consulta"
+    * @return array asociativo / false
+    */
     final public function consultar($consultaSQL, array $valores = array())
     {
         $resultado = false;
-
-        if($statement = $this->dbh->prepare($consultaSQL))
-        {    
+ 
+        if($statement = $this->dbh->prepare($consultaSQL)){
+            
             //Ejecuto la consulta en la DB
             try {
                 if(empty($valores))
@@ -111,5 +115,41 @@ class DatabasePDO
             
         $this->db_usuario       = $cfg['database']['username'];
         $this->db_pass          = $cfg['database']['password'];
+    }
+
+
+    /**
+    * @method ptQuery "Ejecuta una consulta preparandola, aplicando transaccion"
+    * @param string $consultaSQL "Representa el template de las consulta a realizar" 
+    */
+    final public function ptQuery($consultaSQL)
+    {
+    	if($statement = $this->dbh->prepare($consultaSQL))
+    	{
+    		try {
+			   	$this->dbh->beginTransaction();
+				    
+				    foreach ($this->conjuntoDeDatos as $valoresSQL)
+				    {
+				    	$statement->execute($valoresSQL);
+				    }
+			  
+			  	$this->dbh->commit();
+                $this->conjuntoDeDatos = array();
+			}
+			catch (Exception $e) {
+			   $this->dbh->rollBack();
+			   echo "Failed: " . $e->getMessage();
+			}
+    	}
+	}
+
+    /**
+    * @method ptData "Agrega cada set de datos al conjunto de datos"
+    * @param array $loteDeDatos "Representa el lote de informacion que sera ejectuado en la consulta"
+    */
+    final public function ptData(array $loteDeDatos)
+    {
+        $this->conjuntoDeDatos[] = $loteDeDatos;
     }
 }

@@ -119,7 +119,7 @@ class DatabaseMySQLi
         return $arrayDeParametros;
     }
 
-    final private function obtenerConfiguracion()
+    final private function obtenerConfiguracion($archivo)
     {
         if (!$cfg = parse_ini_file($archivo, true))
         {
