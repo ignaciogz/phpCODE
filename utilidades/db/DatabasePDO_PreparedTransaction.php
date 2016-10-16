@@ -14,7 +14,6 @@ class DatabasePDO_PreparedTransaction
     private $db_usuario;
     private $db_pass;
     private $dbh;
-
     private $conjuntoDeDatos = array();
 
     /* Un constructor privado evita la creación de un nuevo objeto */
