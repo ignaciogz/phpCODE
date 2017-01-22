@@ -125,27 +125,29 @@ class DatabasePDO_PreparedTransaction
     */
     final public function ptQuery($consultaSQL)
     {
-    	if($statement = $this->dbh->prepare($consultaSQL))
-    	{
-    		try {
-			   	$this->dbh->beginTransaction();
-				    
-				    foreach ($this->conjuntoDeDatos as $valoresSQL)
-				    {
-				    	$statement->execute($valoresSQL);
-				    }
-			  
-			  	$this->dbh->commit();
+        if($statement = $this->dbh->prepare($consultaSQL))
+        {
+            try {
+                $this->dbh->beginTransaction();
+                    
+                    foreach ($this->conjuntoDeDatos as $valoresSQL)
+                    {
+                        $statement->execute($valoresSQL);
+                    }
+
+                $this->conjuntoDeDatos = array();
+                $this->dbh->commit();
 
                 $statement->closeCursor();
+            }
+            catch (Exception $e) {
                 $this->conjuntoDeDatos = array();
-			}
-			catch (Exception $e) {
-			   $this->dbh->rollBack();
-			   echo "Failed: " . $e->getMessage();
-			}
-    	}
-	}
+                $this->dbh->rollBack();
+                echo "Failed: " . $e->getMessage();
+            }
+        }
+        $this->conjuntoDeDatos = array();
+    }
 
     /**
     * @method ptData "Agrega cada set de datos al conjunto de datos"
