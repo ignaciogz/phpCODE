@@ -14,7 +14,7 @@
 	}
 
 	// Creando y Preparando la consulta SQL
-	$query = 	'INSERT INTO zodiac (' .
+	$query = 	'INSERT INTO tablaDB (' .
 					implode(',',$fields) .
 				') VALUES (' .
 					implode(',', $placeholders) .

@@ -32,6 +32,7 @@ class DatabasePDO_PreparedTransaction
         catch(PDOException $e)
         {
             echo "Error en la conexión: ".$e->getMessage();
+            exit();
         }
     }
  
@@ -105,6 +106,7 @@ class DatabasePDO_PreparedTransaction
         if (!$cfg = parse_ini_file($archivo, true))
         {
             throw new exception ('No se puede abrir el archivo: ' . $archivo . '.');
+            exit();
         } 
 
         $this->db_controlador   = $cfg["database"]["driver"];
@@ -134,6 +136,8 @@ class DatabasePDO_PreparedTransaction
 				    }
 			  
 			  	$this->dbh->commit();
+
+                $statement->closeCursor();
                 $this->conjuntoDeDatos = array();
 			}
 			catch (Exception $e) {

@@ -35,6 +35,7 @@ class DatabasePDO
         catch(PDOException $e)
         {
             echo "Error en la conexión: ".$e->getMessage();
+            exit();
         }
     }
  
@@ -102,6 +103,7 @@ class DatabasePDO
         if (!$cfg = parse_ini_file($archivo, true))
         {
             throw new exception ('No se puede abrir el archivo: ' . $archivo . '.');
+            exit();
         } 
 
         $this->db_controlador   = $cfg["database"]["driver"];

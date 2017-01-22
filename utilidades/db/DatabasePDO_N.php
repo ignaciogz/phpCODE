@@ -20,7 +20,8 @@ class DatabasePDO_N
 	public static function get($key)
 	{
 		if (! isset(self::$dsn[$key])) {
-			throw new Exception("Unknown DSN: $key");
+			throw new Exception("DSN desconocido: $key");
+			exit();
 		}
 
 		// Conecto, en caso de no existir una conexion previa!
